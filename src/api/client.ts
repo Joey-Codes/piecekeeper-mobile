@@ -7,16 +7,25 @@ export class ApiError extends Error {
   status: number;
   /** Laravel validation errors (422): field → messages */
   errors?: Record<string, string[]>;
+  /** 403 with `requires_pro: true` — plan-gated content (see mobile_v1.md) */
+  requiresPro: boolean;
 
   constructor(
     message: string,
     status: number,
     errors?: Record<string, string[]>,
+    requiresPro = false,
   ) {
     super(message);
     this.status = status;
     this.errors = errors;
+    this.requiresPro = requiresPro;
   }
+}
+
+/** True when the error is the backend's plan-gate (403 + requires_pro). */
+export function isProGateError(error: unknown): error is ApiError {
+  return error instanceof ApiError && error.requiresPro;
 }
 
 let currentToken: string | null = null;
@@ -71,16 +80,18 @@ export async function api<T>(
   if (!response.ok) {
     let message = `Request failed (${response.status})`;
     let errors: Record<string, string[]> | undefined;
+    let requiresPro = false;
     try {
       const data = await response.json();
       if (typeof data?.message === "string" && data.message) {
         message = data.message;
       }
       errors = data?.errors;
+      requiresPro = data?.requires_pro === true;
     } catch {
       // non-JSON error body — keep the generic message
     }
-    throw new ApiError(message, response.status, errors);
+    throw new ApiError(message, response.status, errors, requiresPro);
   }
 
   return (await response.json()) as T;

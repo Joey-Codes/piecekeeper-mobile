@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 
 import { SessionProvider, useSession } from "@/auth/session";
+import UpgradeGate from "@/features/launch/upgrade-gate";
 import { navigationThemes } from "@/theme/navigation";
 
 SplashScreen.preventAutoHideAsync();
@@ -49,7 +50,9 @@ export default function RootLayout() {
         <ThemeProvider
           value={navigationThemes[scheme === "dark" ? "dark" : "light"]}
         >
-          <RootNavigator />
+          <UpgradeGate>
+            <RootNavigator />
+          </UpgradeGate>
           <StatusBar style="auto" />
         </ThemeProvider>
       </SessionProvider>
