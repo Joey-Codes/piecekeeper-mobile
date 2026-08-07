@@ -26,8 +26,14 @@ export type Tokens = {
   divider: string;
   /** Stronger interactive border (inputs, outlined buttons) */
   border: string;
-  /** Brand violet — selected tab, links, primary actions */
+  /** Brand violet — selected tab, links, small accents */
   accent: string;
+  /** Tab bar background — deliberately white in BOTH modes (product call) */
+  tabBar: string;
+  /** Primary action buttons — brand orange (amber in dark mode) */
+  cta: string;
+  /** Label color on a cta background */
+  ctaText: string;
   /** Destructive actions (sign out, delete) */
   danger: string;
 };
@@ -45,6 +51,9 @@ export const tokens: Record<"light" | "dark", Tokens> = {
     divider: "#e7e5e4", // stone-200
     border: "#d6d3d1", // stone-300
     accent: "#7c3aed", // violet-600
+    tabBar: "#ffffff",
+    cta: "#f97316", // orange-500 — solid stand-in for the web's amber→orange gradient
+    ctaText: "#ffffff",
     danger: "#dc2626", // red-600
   },
   dark: {
@@ -59,6 +68,9 @@ export const tokens: Record<"light" | "dark", Tokens> = {
     divider: "#2e2e2e",
     border: "#303034",
     accent: "#a78bfa", // violet-400 — violet-600 is too dark against #191919
+    tabBar: "#ffffff", // stays white even in dark mode (product call)
+    cta: "#f59e0b", // amber-500 — warmer than orange against the dark page
+    ctaText: "#ffffff",
     danger: "#ef4444", // red-500
   },
 };
@@ -66,4 +78,20 @@ export const tokens: Record<"light" | "dark", Tokens> = {
 /** Tokens for the current system color scheme. */
 export function useTokens(): Tokens {
   return tokens[useColorScheme() === "dark" ? "dark" : "light"];
+}
+
+/**
+ * Piece status → indicator color (same in both modes; matches the web
+ * checklist's status bars).
+ */
+export const pieceStatusColors: Record<string, string> = {
+  Learning: "#60a5fa", // blue-400
+  Polishing: "#fbbf24", // amber-400
+  Mastered: "#34d399", // emerald-400
+  Relearning: "#a78bfa", // violet-400
+  Shelved: "#a8a29e", // stone-400
+};
+
+export function pieceStatusColor(status: string): string {
+  return pieceStatusColors[status] ?? pieceStatusColors.Polishing;
 }

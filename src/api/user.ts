@@ -9,6 +9,8 @@ import { api } from "@/api/client";
 export type User = {
   name: string;
   email: string;
+  /** Preference: auto-finish the session when the last piece is ticked */
+  auto_end_session: boolean;
 };
 
 export function useUser() {

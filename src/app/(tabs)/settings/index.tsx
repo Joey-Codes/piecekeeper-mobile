@@ -10,6 +10,7 @@ import {
 import { useUser } from "@/api/user";
 import { useSession } from "@/auth/session";
 import { useTokens } from "@/theme/tokens";
+import { fonts } from "@/theme/typography";
 
 export default function SettingsScreen() {
   const { signOut } = useSession();
@@ -28,12 +29,7 @@ export default function SettingsScreen() {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={styles.content}
     >
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: t.card, borderColor: t.divider },
-        ]}
-      >
+      <View style={[styles.card, { backgroundColor: t.card }]}>
         <View style={[styles.row, { borderBottomColor: t.divider }]}>
           <Text style={[styles.rowLabel, { color: t.ink }]}>
             {user?.name ?? "…"}
@@ -63,7 +59,6 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 12,
-    borderWidth: StyleSheet.hairlineWidth,
     overflow: "hidden",
   },
   row: {
@@ -76,9 +71,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   rowLabel: {
+    fontFamily: fonts.body,
     fontSize: 17,
   },
   rowDetail: {
-    fontSize: 14,
+    fontFamily: fonts.body,
+    fontSize: 15,
   },
 });

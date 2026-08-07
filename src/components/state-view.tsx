@@ -1,8 +1,10 @@
 import { SymbolView } from "expo-symbols";
 import type { SFSymbol } from "sf-symbols-typescript";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
+import PrimaryButton from "@/components/primary-button";
 import { useTokens } from "@/theme/tokens";
+import { fonts } from "@/theme/typography";
 
 export type StateViewProps = {
   symbol: SFSymbol;
@@ -32,18 +34,11 @@ export default function StateView({
         <Text style={[styles.message, { color: t.inkMuted }]}>{message}</Text>
       ) : null}
       {action ? (
-        <Pressable
-          style={({ pressed }) => [
-            styles.action,
-            { backgroundColor: t.accent },
-            pressed && styles.actionPressed,
-          ]}
+        <PrimaryButton
+          label={action.label}
           onPress={action.onPress}
-        >
-          <Text style={[styles.actionLabel, { color: t.card }]}>
-            {action.label}
-          </Text>
-        </Pressable>
+          style={styles.action}
+        />
       ) : null}
     </View>
   );
@@ -58,29 +53,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
-    fontSize: 17,
-    fontWeight: "600",
+    fontFamily: fonts.bodySemiBold,
+    fontSize: 18,
     textAlign: "center",
     marginTop: 8,
   },
   message: {
-    fontSize: 15,
+    fontFamily: fonts.body,
+    fontSize: 16,
     textAlign: "center",
     maxWidth: 320,
   },
   action: {
-    minHeight: 44,
-    borderRadius: 12,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "center",
     marginTop: 12,
-  },
-  actionPressed: {
-    opacity: 0.7,
-  },
-  actionLabel: {
-    fontSize: 15,
-    fontWeight: "600",
   },
 });

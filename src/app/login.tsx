@@ -1,10 +1,9 @@
+import { Image } from "expo-image";
 import { useRef, useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -14,7 +13,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ApiError } from "@/api/client";
 import { useSession } from "@/auth/session";
+import PrimaryButton from "@/components/primary-button";
 import { useTokens } from "@/theme/tokens";
+import { fonts } from "@/theme/typography";
 
 export default function LoginScreen() {
   const { signIn } = useSession();
@@ -46,7 +47,7 @@ export default function LoginScreen() {
 
   const inputStyle = [
     styles.input,
-    { backgroundColor: t.button, borderColor: t.border, color: t.ink },
+    { backgroundColor: t.button, color: t.ink },
   ];
 
   return (
@@ -58,7 +59,16 @@ export default function LoginScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.form}>
-        <Text style={[styles.title, { color: t.inkStrong }]}>PieceKeeper</Text>
+        <View style={styles.brandRow}>
+          <Image
+            source={require("@/assets/images/logo.png")}
+            style={styles.logo}
+            contentFit="contain"
+          />
+          <Text style={[styles.title, { color: t.inkStrong }]}>
+            PieceKeeper
+          </Text>
+        </View>
         <Text style={[styles.subtitle, { color: t.inkMuted }]}>
           Sign in to your account
         </Text>
@@ -93,21 +103,13 @@ export default function LoginScreen() {
           editable={!busy}
         />
 
-        <Pressable
-          style={({ pressed }) => [
-            styles.submit,
-            { backgroundColor: t.accent },
-            (pressed || !canSubmit) && styles.submitDimmed,
-          ]}
+        <PrimaryButton
+          label="Sign In"
           onPress={submit}
           disabled={!canSubmit}
-        >
-          {busy ? (
-            <ActivityIndicator color={t.card} />
-          ) : (
-            <Text style={[styles.submitLabel, { color: t.card }]}>Sign In</Text>
-          )}
-        </Pressable>
+          loading={busy}
+          style={styles.submit}
+        />
       </View>
     </KeyboardAvoidingView>
   );
@@ -122,35 +124,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     gap: 12,
   },
+  brandRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+  },
   title: {
+    fontFamily: fonts.display,
     fontSize: 34,
-    fontWeight: "700",
     textAlign: "center",
   },
   subtitle: {
+    fontFamily: fonts.body,
     fontSize: 15,
     textAlign: "center",
     marginBottom: 20,
   },
   input: {
+    fontFamily: fonts.body,
     height: 50,
     borderRadius: 12,
-    borderWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 16,
     fontSize: 17,
   },
   submit: {
-    height: 50,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
     marginTop: 8,
-  },
-  submitDimmed: {
-    opacity: 0.6,
-  },
-  submitLabel: {
-    fontSize: 17,
-    fontWeight: "600",
   },
 });

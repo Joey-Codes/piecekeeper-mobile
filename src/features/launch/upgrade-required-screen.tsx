@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTokens } from "@/theme/tokens";
+import { fonts } from "@/theme/typography";
 
 /**
  * Full-screen block shown instead of the app when app-config says this
@@ -56,12 +57,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   title: {
+    fontFamily: fonts.bodySemiBold,
     fontSize: 22,
-    fontWeight: "600",
     textAlign: "center",
     marginTop: 8,
   },
   message: {
+    fontFamily: fonts.body,
     fontSize: 15,
     textAlign: "center",
     maxWidth: 320,
